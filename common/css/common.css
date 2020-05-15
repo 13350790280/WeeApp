@@ -1,0 +1,21 @@
+/* 主体*/
+.main-bg{
+	background-color: #D43458;
+}
+.main-text{
+	color: #FA436A;
+}
+.main-bg-hover{
+	background-color: #EE7575;
+}
+.main-text-hover{
+color: #EE7575;
+}
+
+/*副体*/
+.two-bg{
+	background-color:#FBEDF6;
+}
+.two-text{
+	color:#FBEDF6;
+}

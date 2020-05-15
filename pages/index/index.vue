@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view>
 		<!-- 小程序头部兼容 -->
 		<!-- #ifdef MP -->
 		<view class="mp-search-box">
@@ -13,39 +13,13 @@
 			<view class="titleNview-placing"></view>
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
-			<swiper class="carousel" circular @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
-					<image :src="item.src" />
-				</swiper-item>
-			</swiper>
-			<!-- 自定义swiper指示器 -->
-			<view class="swiper-dots">
-				<text class="num">{{swiperCurrent+1}}</text>
-				<text class="sign">/</text>
-				<text class="num">{{swiperLength}}</text>
-			</view>
+			<swiper-image @swiperChange="swiperChange" :carouselList="carouselList" :swiperCurrent="swiperCurrent" :swiperLength="swiperLength" @click="navToDetailPage"></swiper-image>
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section">
-			<view class="cate-item">
-				<image src="/static/temp/c3.png"></image>
-				<text>环球美食</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c5.png"></image>
-				<text>个护美妆</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c6.png"></image>
-				<text>营养保健</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c7.png"></image>
-				<text>家居厨卫</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c8.png"></image>
-				<text>速食生鲜</text>
+			<view class="cate-item animate__animated" v-for="(item,index) in classList" :key="index" hover-class="animate__pulse animate__faster">
+				<image :src="item.src"></image>
+				<text >{{item.name}}</text>
 			</view>
 		</view>
 		
@@ -80,7 +54,7 @@
 		
 		<!-- 团购楼层 -->
 		<view class="f-header m-t">
-			<image src="/static/temp/h1.png"></image>
+			<image src="/static/temp/h1.png" class="animate__animated" hover-class="animate__zoomIn animate__faster"></image>
 			<view class="tit-box">
 				<text class="tit">精品团购</text>
 				<text class="tit2">Boutique Group Buying</text>
@@ -110,8 +84,7 @@
 							  	</view>
 								<text>6人成团</text>
 							</view>
-						</view>
-						            
+						</view>         
 					</view>
 					<view class="g-item right">
 						<image :src="goodsList[index+1].image" mode="aspectFill"></image>
@@ -130,7 +103,6 @@
 						</view>
 					</view>
 				</swiper-item>
-
 			</swiper>
 		</view>
 		
@@ -221,7 +193,6 @@
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
-		
 		<view class="guess-section">
 			<view 
 				v-for="(item, index) in goodsList" :key="index"
@@ -235,27 +206,55 @@
 				<text class="price">￥{{item.price}}</text>
 			</view>
 		</view>
-		
-
+		<view class="flex align-center justify-center my-2">
+			{{loading}}
+		</view>
 	</view>
 </template>
 
 <script>
-
+import swiperImage from '@/components/common/swiper-image.vue';
 	export default {
-
+		components:{
+			swiperImage
+		},
 		data() {
 			return {
+				loading:"加载更多",
+				num:0,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
 				carouselList: [],
-				goodsList: []
+				goodsList: [],
+				classList:[
+					{
+						src:'/static/temp/c3.png',
+						name:'环球美食'
+					},
+					{
+						src:'/static/temp/c5.png',
+						name:'个护美妆'
+					},
+					{
+						src:'/static/temp/c6.png',
+						name:'营养保健'
+					},
+					{
+						src:'/static/temp/c7.png',
+						name:'家居厨卫'
+					},
+					{
+						src:'/static/temp/c8.png',
+						name:'速食生鲜'
+					},
+				]
 			};
 		},
 
 		onLoad() {
 			this.loadData();
+			console.log(new Date())
 		},
 		methods: {
 			/**
@@ -273,6 +272,7 @@
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
+				// console.log(e)
 				const index = e.detail.current;
 				this.swiperCurrent = index;
 				this.titleNViewBackground = this.carouselList[index].background;
@@ -285,6 +285,20 @@
 					url: `/pages/product/product?id=${id}`
 				})
 			},
+		},
+		// 上拉触底事件
+		onReachBottom(){
+			if(this.loading==="加载更多"&&this.num<2){
+				this.num++;
+				console.log(this.num)
+				this.loading="加载中...";
+				let delTime=setTimeout(()=>{
+						this.loading="加载更多";
+						clearTimeout(delTime);
+				},1000)
+			}else{
+				this.loading="没有更多数据了";
+			}
 		},
 		// #ifndef MP
 		// 标题栏input搜索框点击

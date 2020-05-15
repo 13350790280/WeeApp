@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view >
 		<view class="carousel">
 			<swiper indicator-dots circular=true duration="400">
 				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
@@ -8,6 +8,7 @@
 							:src="item.src" 
 							class="loaded" 
 							mode="aspectFill"
+							@click="previewImage"
 						></image>
 					</view>
 				</swiper-item>
@@ -107,7 +108,7 @@
 		
 		<!-- 底部操作菜单 -->
 		<view class="page-bottom">
-			<navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
+			<navigator url="/pages/index/index" open-type="switchTab"  class="p-b-btn">
 				<text class="yticon icon-xiatubiao--copy"></text>
 				<text>首页</text>
 			</navigator>
@@ -276,7 +277,6 @@
 				this.$api.msg(`点击了${id}`);
 			}
 			
-			
 			//规格 默认选中第一条
 			this.specList.forEach(item=>{
 				for(let cItem of this.specChildList){
@@ -290,6 +290,13 @@
 			this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
+			// 浏览大图
+			previewImage(){
+				uni.previewImage({
+					urls:this.imgList,
+					loop:ture
+				})
+			},
 			//规格弹窗开关
 			toggleSpec() {
 				if(this.specClass === 'show'){
