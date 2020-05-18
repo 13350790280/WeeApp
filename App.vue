@@ -34,6 +34,7 @@ export default {
 	@import "./common/css/woniu.css";
 	@import "./common/css/common.css";
 	@import "./common/css/animate.css";
+	@import "http://at.alicdn.com/t/font_1807526_z2b47rwd7z.css";
 	
 /*
 		全局公共样式和字体图标

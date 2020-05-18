@@ -177,6 +177,33 @@
 				"navigationBarTitleText": "商品列表"
 			}
         }
+        ,{
+            "path" : "pages/seach/seach", //搜索
+            "style" : {
+				"app-plus": {
+					"titleNView": {
+						"searchInput": {
+							"backgroundColor": "rgba(231, 231, 231,.7)",
+							"borderRadius": "16px",
+							"placeholder": "搜索宝贝",
+							"placeholderColor": "#606266",
+							"autoFocus":true,
+							"align":"left"
+						},
+						"buttons": [
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "搜索",
+								"fontSize": "15",
+								"color": "#303133",
+								"background": "rgba(231, 231, 231,.7)",
+								"float":"right"
+							}
+						]
+					}
+				}
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

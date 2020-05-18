@@ -304,12 +304,23 @@ import swiperImage from '@/components/common/swiper-image.vue';
 		// 标题栏input搜索框点击
 		onNavigationBarSearchInputClicked: async function(e) {
 			this.$api.msg('点击了搜索框');
+			uni.navigateTo({
+				url:'../seach/seach'
+			})
 		},
 		//点击导航栏 buttons 时触发
 		onNavigationBarButtonTap(e) {
 			const index = e.index;
 			if (index === 0) {
-				this.$api.msg('点击了扫描');
+				// 扫描
+				// this.$api.msg('点击了扫描');
+				uni.scanCode({
+				    success: (res)=> {
+						this.$api.msg('条码内容：' + res.result+'条码类型'+res.scanType)
+				        console.log('条码内容：' + res.result+'条码类型'+res.scanType);
+				    }
+				});
+				 
 			} else if (index === 1) {
 				// #ifdef APP-PLUS
 				const pages = getCurrentPages();
